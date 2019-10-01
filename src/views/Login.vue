@@ -26,12 +26,14 @@ export default {
             e.preventDefault();
             auth.authorizeEmailPassword(this.email, this.password).then(function(response){
                 if(response.isOK){
-                    localStorage.setItem("_session", response.body.session_token);
+                    window.localStorage.setItem("_session", response.data.session_token);
                     Notifications.show(response.message);
+
+                    this.$router.replace("/");
                 } else {
                     Notifications.show(response.message);
                 }
-            });
+            }.bind(this));
         }
     }
 }
