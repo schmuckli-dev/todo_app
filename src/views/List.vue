@@ -8,6 +8,12 @@
                     <v-list-item-title>{{ item.data.name }}</v-list-item-title>
                     <v-list-item-subtitle>{{ item.data.description }}</v-list-item-subtitle>
                 </v-list-item-content>
+
+                <v-list-item-action>
+                    <v-btn icon>
+                        <v-icon color="grey lighten-1" @click="deleteItem(item.id)">mdi-delete</v-icon>
+                    </v-btn>
+                </v-list-item-action>
             </v-list-item>
         </div>
     </div>
@@ -39,6 +45,14 @@ export default {
             }).then(function(response){
                 if(response.isOK){
                     Notifications.show("The todo item has been added.");
+                    this.loadList();
+                }
+            }.bind(this));
+        },
+        deleteItem(id){
+            storage.delete("items", id).then(function(response){
+                if(response.isOK){
+                    Notifications.show("The todo item has been deleted.");
                     this.loadList();
                 }
             }.bind(this));
