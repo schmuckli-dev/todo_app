@@ -9,7 +9,7 @@
     </v-app-bar>
 
     <v-content>
-      <v-container>
+      <v-container fluid class="main_container">
         <router-view />
       </v-container>
     </v-content>
@@ -45,3 +45,17 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+@media only screen and (min-width: 960px){
+  .main_container{
+    width: 50%;
+  }
+}
+</style>
+
+<style>
+.center{
+  text-align: center;
+}
+</style>

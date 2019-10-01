@@ -28,7 +28,7 @@ export default {
             e.preventDefault();
             if(this.password === this.passwordRepeat){
                 auth.registerEmailPassword(this.email, this.password, window.navigator.language.split("-")[0]).then(function(response){
-                    if(response.isOk){
+                    if(response.isOK){
                         Notifications.show(response.message);
                     } else {
                         Notifications.show(response.message);
