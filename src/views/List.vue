@@ -10,7 +10,10 @@
 
                 <v-list-item-action>
                     <v-btn icon>
-                        <v-icon color="grey lighten-1" @click="deleteItem(item.id)">mdi-delete</v-icon>
+                        <v-icon :color="item.data.done == 'true' ? 'green' : 'grey'" @click="checkItem(item.id, item.data.done)">mdi-check</v-icon>
+                    </v-btn>
+                    <v-btn icon>
+                        <v-icon color="black lighten-1" @click="deleteItem(item.id)">mdi-delete</v-icon>
                     </v-btn>
                 </v-list-item-action>
             </v-list-item>
@@ -127,12 +130,35 @@ export default {
             storage.insert("items", {
                 name: this.dialogAddTodoItem_Name,
                 description: this.dialogAddTodoItem_Description,
-                date: Date.parse(this.dialogAddTodoItem_Date + " " + this.dialogAddTodoItem_Time)
+                date: Date.parse(this.dialogAddTodoItem_Date + " " + this.dialogAddTodoItem_Time),
+                done: "false"
             }).then(function(response){
                 if(response.isOK){
                     Notifications.show("The todo item has been added.");
                     this.loadList(); //Refresh the list with the new item
                     this.dialogAddTodoItem = false; //Close the modal
+                } else {
+                    Notifications.show(response.message);
+                }
+            }.bind(this));
+        },
+        checkItem(id, status){
+            var message;
+
+            //Turn the status
+            if(status == 'true'){
+                status = 'false';
+                message = "The todo item has been marked as undone.";
+            } else {
+                status = 'true';
+                message = "The todo item has been marked as done.";
+            }
+            storage.update("items", id, {
+                done: status
+            }).then(function(response){
+                if(response.isOK){
+                    Notifications.show(message);
+                    this.loadList();
                 } else {
                     Notifications.show(response.message);
                 }
